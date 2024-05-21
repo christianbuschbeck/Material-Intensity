@@ -109,17 +109,17 @@ def CF_generate(mli,Val,dnames,duuid,dunit,dcatpath):
 
 
 def median_function(l):
+  
   n_num = l
   n = len(n_num)
   n_num.sort()
-
   if n % 2 == 0:
     median1 = n_num[n//2]
     median2 = n_num[n//2 - 1]
     median = (median1 + median2)/2
   else:
     median = n_num[n//2]
-    return median
+  return median
 
 ######################################  A D D    R E L E V A N T    F L O W S ###############################################
 
@@ -215,7 +215,7 @@ else:
   soilerodet.refId = "5cb88e58-b1e2-4b10-a055-c9870eb375e7"
   dao_f.insert(soilerodet)
 
-
+  
 if "flag missing overburden" in allflow_names:
   missingoverburden_flow = dao_f.getForName("flag missing overburden")[0]
 else:
@@ -232,6 +232,16 @@ else:
   missinggangue_flow.refId = "8f27c4a2-a8d2-45e5-b15b-d2af5ef0447e"
   dao_f.insert(missinggangue_flow)
 
+  
+if "flag external data" in allflow_names:
+  external_data_flow = dao_f.getForName("flag external data")[0]
+else:
+  external_data_flow = actinium.copy()
+  external_data_flow.name = 'flag external data'
+  external_data_flow.refId = "db01c0ff-a5ca-454a-8834-0595e7b59814"
+  dao_f.insert(external_data_flow)
+
+  
 allflows = dao_f.getAll()
 
 ##############################
@@ -294,86 +304,86 @@ for p in allprocesses:
 
 
 overburden_list = [
-
+  
   #Bauxite
-  ["bauxite mine operation | bauxite","Global", 0.5018],    #aus ecoinvent documentation 1m dicke * 2.6 g/cm^2
+  ["bauxite mine operation | bauxite","Global", 0.5018],    #aus ecoinvent documentation: 1m dicke * 2.6 g/cm^2 
 
   # Iron
-  ["iron ore mine operation and beneficiation | iron ore concentrate","Canada, Qu",0.255],
-  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe","Global",63/46 * 0.255],
-
+  ["iron ore mine operation and beneficiation | iron ore concentrate","Canada, Qu",0.255], # aus ecoinvent datensatz
+  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe","Global",63/46 * 0.255],# aus ecoinvent datensatz
+	
   #Copper
-  ["gold mine operation and refining | copper, cathode","Sweden",687],
-  ["platinum group metal mine operation, ore with high palladium content | copper, cathode","Russian Federation", 687],
-  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",687],
+  ["gold mine operation and refining | copper, cathode","Sweden",392],                                                 # global database
+  ["platinum group metal mine operation, ore with high palladium content | copper, cathode","Russian Federation", 392], #global database
+  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",392],         #global database
   #Copper concentrate
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",150.2],
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",150.2],
-
-  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",150.2],
-  ["molybdenite mine operation | copper concentrate, sulfide ore","Global",150.2],
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",88],          #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",75],             #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",102],             #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",100],             #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",117],         #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",80],         #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",100],     #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",100],#global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",305],     #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",445],            #global database
+  
+  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",75],  #global database
+  ["molybdenite mine operation | copper concentrate, sulfide ore","Global",100],                       #global database
 
   #Gold
-  ["silver-gold mine operation with refinery | gold","Chile",1977787.9],
-  ["silver-gold mine operation with refinery | gold","Rest-of-World",1977787.9],
-
-  ["gold mine operation and gold production, unrefined | gold, unrefined","South Africa",1977787.9],
-  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",1977787.9],
-  ["gold mine operation and refining | gold","Sweden",1977787.9],
-  ["gold-silver mine operation with refinery | gold","Papua New Guinea",1977787.9],
-  ["gold-silver mine operation with refinery | gold","Canada, Qu",1977787.9],
-  ["gold-silver mine operation with refinery | gold","Rest-of-World",1977787.9],
-  ["gold-silver mine operation with refinery | gold","Rest-of-World",1977787.9],
-  ["gold production | gold","Canada",1977787.9],
-  ["gold production | gold","Australia",1977787.9],
-  ["gold production | gold","Tanzania, United Republic of",1977787.9],
-  ["gold production | gold","United States",1977787.9],
+  ["silver-gold mine operation with refinery | gold","Chile",2779394],         #global database
+  ["silver-gold mine operation with refinery | gold","Rest-of-World",2779394], #global database
+ 
+  ["gold mine operation and gold production, unrefined | gold, unrefined","South Africa",2779394], #global database
+  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",2779394],#global database
+  ["gold mine operation and refining | gold","Sweden",2779394],                                    #global database
+  ["gold-silver mine operation with refinery | gold","Papua New Guinea",161541],                   #global database
+  ["gold-silver mine operation with refinery | gold","Canada, Qu",1689944],                        #global database
+  ["gold-silver mine operation with refinery | gold","Rest-of-World",2779394],                     #global database
+  ["gold-silver mine operation with refinery | gold","Rest-of-World",2779394],                     #global database
+  ["gold production | gold","Canada",1689944],                                                     #global database
+  ["gold production | gold","Australia",1580817],                                                  #global database
+  ["gold production | gold","Tanzania, United Republic of",1784282],                               #global database
+  ["gold production | gold","United States",5055980],                                              #global database
 
   #Silver
-  ["gold mine operation and refining | silver","Sweden",56132.2],
-
-  ["gold-silver mine operation with refinery | silver","Papua New Guinea",56132.2],
-  ["gold-silver mine operation with refinery | silver","Canada, Qu",56132.2],
-  ["gold-silver mine operation with refinery | silver","Rest-of-World",56132.2],
-
-  ["silver-gold mine operation with refinery | silver","Chile",56132.2],
-  ["silver-gold mine operation with refinery | silver","Rest-of-World",56132.2],
-
-  ["silver mine operation with extraction | silver, unrefined","Peru",56132.2],
+  ["gold mine operation and refining | silver","Sweden",44146],                  #global database
+  
+  ["gold-silver mine operation with refinery | silver","Papua New Guinea",44146],#global database
+  ["gold-silver mine operation with refinery | silver","Canada, Qu",31728],      #global database
+  ["gold-silver mine operation with refinery | silver","Rest-of-World",44146],   #global database
+  
+  ["silver-gold mine operation with refinery | silver","Chile",44146],           #global database
+  ["silver-gold mine operation with refinery | silver","Rest-of-World",44146],   #global database
+  
+  ["silver mine operation with extraction | silver, unrefined","Peru",27734],    #global database
 
   #Lead
-  ["gold mine operation and refining | lead","Sweden",10.7],
+  ["gold mine operation and refining | lead","Sweden",10.7],                             # !! CHECK !!
   #Lead concentrate
-  ["gold-silver mine operation and beneficiation | lead concentrate","Canada, Qu",5.7],
-  ["silver mine operation with extraction | lead concentrate","Peru",5.7],
+  ["gold-silver mine operation and beneficiation | lead concentrate","Canada, Qu",5.7],  # !! CHECK !!
+  ["silver mine operation with extraction | lead concentrate","Peru",5.7],               # !! CHECK !!
 
   #Molybdenite
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Canada",2211.3],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Chile",2211.3],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","China",2211.3],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Rest-of-World",2211.3],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Russian Federation",2211.3],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","United States",2211.3],
-
-  ["molybdenite mine operation | molybdenite","Global",2211.3],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Canada",1123],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Chile",1136],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","China",1136],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Rest-of-World",1136],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Russian Federation",1136],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","United States",1136],
+  
+  ["molybdenite mine operation | molybdenite","Global",1136],
 
   #Zinc
-  ["gold mine operation and refining | zinc","Sweden",43.7],
+  ["gold mine operation and refining | zinc","Sweden",75],
   #Zinc concentrate
-  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Qu",22.8],
-  ["silver mine operation with extraction | zinc concentrate","Peru",22.8]]
+  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Qu",38],
+  ["silver mine operation with extraction | zinc concentrate","Peru",39]]
 
 # The overburden list is iterated and the overburden values are inserted in the respective processes
-
-
+  
+  
 for mp in overburden_list:
   mining_process_name_raw = mp[0]
   location                = mp[1]
@@ -387,14 +397,21 @@ for mp in overburden_list:
   mining_processes = dao_p.getForName(mining_processes_name_explicit)
   foundsomething = False
   for p in mining_processes:
-
+    
     if location in p.location.name:
-      foundsomething = True
+      foundsomething = True      
       isin = False
 
       for ex in p.exchanges:
         if ex.isInput == True:
           if ex.flow.name == overburden.name:
+            ex.amount = overburden_amount
+            #ex.unit = kg
+            dao_p.update(p)
+            isin = True
+            break
+          
+          if ex.flow.name == external_data_flow.name:
             ex.amount = overburden_amount
             #ex.unit = kg
             dao_p.update(p)
@@ -412,11 +429,21 @@ for mp in overburden_list:
         p.exchanges.add(ex)
         dao_p.update(p)
 
+        ex = model.Exchange()
+        ex.isInput = True
+        ex.flow = external_data_flow
+        ex.amount = overburden_amount
+        ex.unit = kg
+        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        p.exchanges.add(ex)
+        dao_p.update(p)
+      
+      
   if foundsomething == False:
     print("nothing found for:" + mining_processes_name_explicit + location)
 
 
-"""
+
 # In order to estimate the robustness of abiotic material, the mining processes that lack overburden get the elementary flow
 # "missing_overburden" with an amount of 1.
 
@@ -432,61 +459,81 @@ allprocesses = dao_p.getAll()
 
 
 gangue_list = [
-
+  # Iron
+  ["iron ore mine operation and beneficiation | iron ore concentrate |","Canada, Q",0.4995],    # aus ecoinvent
+  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe |","Global",63/46 * 0.4995],  # aus ecoinvent
 
   # Copper
-  ["platinum group metal mine operation, ore with high palladium content | copper, cathode |", 108.6],
-  ["gold mine operation and refining | copper, cathode |",108.6],
-  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode",108.6],
+  ["platinum group metal mine operation, ore with high palladium content | copper, cathode |","Russian Federation", 215], # gobal database
+  ["gold mine operation and refining | copper, cathode |","Sweden",41],                                                   # gobal database
+  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",182],           # gobal database
+  
   # Copper concentrate
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore",28.9],
-  ["molybdenite mine operation | copper concentrate, sulfide ore |",28.9],
-  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore ",28.9],
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",62],         # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",21],            # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",79],             # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",47],             # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",47],         # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",41],        # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",47],     # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",55],# gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",59],   # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",29],          # gobal database
+  
+  ["molybdenite mine operation | copper concentrate, sulfide ore |","Global",47],                      # gobal database
+  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",21],  # gobal database
 
 
   # Gold
-  ["gold mine operation and gold production, unrefined | gold, unrefined",597162.6],
-  ["gold mine operation and refining | gold |",597162.6],
-  ["gold production | gold |",597162.6],
-  ["silver-gold mine operation with refinery | gold |",597162.6],
-  ["gold-silver mine operation with refinery | gold |",597162.6],
+  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",24652],  # gobal database
+  ["gold mine operation and gold production, unrefined | gold, unrefined","Zambia",37],         # gobal database
+  ["gold mine operation and refining | gold |","Sweden",1077247],                                    # gobal database
+  ["gold production | gold |","Australia",115447],                                                  # gobal database
+  ["gold production | gold |","Canada",636964],                                                     # gobal database
+  ["gold production | gold |","Tanzania, United Republic of",359113],                               # gobal database
+  ["gold production | gold |","United States",509245],                                              # gobal database
+  ["silver-gold mine operation with refinery | gold |","Chile",976384],                             # gobal database
+  ["silver-gold mine operation with refinery | gold |","Rest-of-World",24652],                     # gobal database
+  ["gold-silver mine operation with refinery | gold |","Canada, Q",636964],                         # gobal database
+  ["gold-silver mine operation with refinery | gold |","Papua New Guinea",1327458],                  # gobal database
+  ["gold-silver mine operation with refinery | gold |","Rest-of-World",24652],                     # gobal database
 
   # Molybdenum
-  ["molybdenite mine operation | molybdenite |",439.7],
-
-  # Iron
-  ["iron ore mine operation and beneficiation | iron ore concentrate |",0.4995],       # aus ecoinvent
-  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe |",63/46 * 0.4995],  # aus ecoinvent
+  ["molybdenite mine operation | molybdenite |","Global",1414],   # gobal database
 
   # Silver
-  ["gold-silver mine operation with refinery | silver |",3709.3],
-  ["gold mine operation and refining | silver |",3709.3],
-  ["silver-gold mine operation with refinery | silver |",3709.3],
+  ["gold-silver mine operation with refinery | silver |","Canada, Q",983441],        # gobal database
+  ["gold-silver mine operation with refinery | silver |","Papua New Guinea",22682],  # gobal database
+  ["gold-silver mine operation with refinery | silver |","Rest-of-World",22682],     # gobal database
+  
+  ["gold mine operation and refining | silver |","Sweden",16708],                  # gobal database
+  ["silver-gold mine operation with refinery | silver |","Chile",10309],           # gobal database
+  ["silver-gold mine operation with refinery | silver |","Rest-of-World",22682],   # gobal database
 
   # Lead
-  ["gold mine operation and refining | lead",5.4],
+  ["gold mine operation and refining | lead","Sweden",28],  # gobal database
   # Lead concentrate
-  ["gold-silver mine operation and beneficiation | lead concentrate",3.3],
+  ["gold-silver mine operation and beneficiation | lead concentrate","Canada, Q",18],  # gobal database
 
   # Zinc
-  ["gold mine operation and refining | zinc",7.6],
+  ["gold mine operation and refining | zinc","Sweden",11],   # gobal database
   # Zinc concentrate
-  ["gold-silver mine operation and beneficiation | zinc concentrate",4.4],
+  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Q",24],  # gobal database
 
   # Nickel
-  ["platinum group metal mine operation, ore with high palladium content | nickel, class",57.9],
+  ["platinum group metal mine operation, ore with high palladium content | nickel, class","Russian Federation",93],  # gobal database
 
   # Palladium
-  ["platinum group metal mine operation, ore with high palladium content | palladium",290685.2],
+  ["platinum group metal mine operation, ore with high palladium content | palladium","Russian Federation",2722423], # gobal database
 
   # Platinum
-  ["platinum group metal mine operation, ore with high palladium content | platinum",222769.7],
+  ["platinum group metal mine operation, ore with high palladium content | platinum","Russian Federation",2298117],  # gobal database
 
   # Rhodium
-  ["platinum group metal mine operation, ore with high palladium content | rhodium",864627.3],
+  ["platinum group metal mine operation, ore with high palladium content | rhodium","Russian Federation",864627.3],  ## 27 -> Strange
 
   # Uranium
-  ["uranium production, in yellowcake, in-situ leaching | uranium, in yellowcake",2134.3]]
+  ["uranium production, in yellowcake, in-situ leaching | uranium, in yellowcake","Global",8384]]  # gobal database
 
 
 # Mining processes are updated with the respective value
@@ -501,37 +548,54 @@ for mp in gangue_list:
         mining_processes_name_explicit = ap.name
 
   mining_processes = dao_p.getForName(mining_processes_name_explicit)
-
+  foundsomething = False
   for p in mining_processes:
+    
+    if location in p.location.name:
+      foundsomething = True
+      isin = False
+      
+      for ex in p.exchanges:
+        if ex.isInput == True:
+          if ex.flow.name == gangue.name:
+            ex.amount = gangue_amount
+            #ex.unit = kg
+            dao_p.update(p)
+            isin = True
+            break
+          
+          if ex.flow.name == external_data_flow.name:
+            ex.amount = gangue_amount
+            #ex.unit = kg
+            dao_p.update(p)
+            isin = True
+            break
 
-    isin = False
+      if isin == False:
+        
+        ex = model.Exchange()
+        ex.isInput = True
+        ex.flow = gangue
+        ex.amount = gangue_amount
+        ex.unit = kg
+        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        p.exchanges.add(ex)
+        dao_p.update(p)
+        
+        ex = model.Exchange()
+        ex.isInput = True
+        ex.flow = external_data_flow
+        ex.amount = gangue_amount
+        ex.unit = kg
+        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        p.exchanges.add(ex)
+        dao_p.update(p)
 
-    for ex in p.exchanges:
-      if ex.isInput == True:
-        if ex.flow.name == gangue.name:
-          ex.amount = gangue_amount
-          #ex.unit = kg
-          dao_p.update(p)
-          isin = True
-          break
-
-    if isin == False:
-
-      ex = model.Exchange()
-      ex.isInput = True
-      ex.flow = gangue
-      ex.amount = gangue_amount
-      ex.unit = kg
-      ex.flowPropertyFactor = gangue.getReferenceFactor()
-      p.exchanges.add(ex)
-      dao_p.update(p)
-
-
-
+      
 ####################################
 ### M I S S I N G   F L O W S    ###
 ####################################
-
+        
 
 allprocesses = dao_p.getAll()
 allcategories =dao_c.getAll()
@@ -561,7 +625,7 @@ for par in mining_cat_parents:
 missing_overburden = []
 missing_gangue     = []
 missing_outside = []
-
+  
 
 for p in allprocesses:
   if p.category.name in children_list_glob:
@@ -582,7 +646,7 @@ for p in allprocesses:
       if isin_ga ==False:
         if "07" in p.category.name:
           missing_gangue.append(p.name)
-
+          
           ex = model.Exchange()
           ex.isInput = True
           ex.flow = missinggangue_flow
@@ -591,11 +655,11 @@ for p in allprocesses:
           ex.flowPropertyFactor = gangue.getReferenceFactor()
           p.exchanges.add(ex)
           dao_p.update(p)
-
+          
       if isin_ov ==False:
         if "05" in p.category.name or "07" in p.category.name:
           missing_overburden.append(p.name)
-
+          
           ex = model.Exchange()
           ex.isInput = True
           ex.flow = missingoverburden_flow
@@ -851,7 +915,8 @@ method={"@type":"ImpactMethod","category":"Material Intensity","@id":"56c9a436-2
 {"@type":"ImpactCategory","category":"Material Intensity","@id":"3d2d5656-2e3e-4453-8003-c3d485356045","name":"Biotic TMR","refUnit":"kg"},
 {"@type":"ImpactCategory","category":"Material Intensity","@id":"8f07827d-72c0-4ae7-a708-a18e684b3f54","name":"Water","refUnit":"kg"},
 {"@type":"ImpactCategory","category":"Material Intensity","@id":"68be8652-dba7-443e-b439-c57d058f0388","name":"Moved Soil","refUnit":"kg"},
-{"@type":"ImpactCategory","category":"Material Intensity","@id":"cd9a353b-371c-4aa9-bdec-89e98891d5dd","name":"ESTIMATE MISSING ABIOTIC","refUnit":"kg"}]}
+{"@type":"ImpactCategory","category":"Material Intensity","@id":"cd9a353b-371c-4aa9-bdec-89e98891d5dd","name":"ESTIMATE MISSING ABIOTIC","refUnit":"kg"},
+{"@type":"ImpactCategory","category":"Material Intensity","@id":"edeb416b-5d59-4524-95dc-9c0a9261c0d0","name":"FLAG EXTERNAL DATA","refUnit":"kg"}]}
 
 
 empty_abiotic_rmi  ={
@@ -942,6 +1007,19 @@ empty_missing  ={
     "impactFactors": [],
     "id": "cd9a353b-371c-4aa9-bdec-89e98891d5dd.json"}
 
+
+empty_external  ={
+    "@context": "http://greendelta.github.io/olca-schema/context.jsonld",
+    "@type": "ImpactCategory",
+    "category":"Material Intensity",
+    "@id": "edeb416b-5d59-4524-95dc-9c0a9261c0d0",
+    "name": "FLAG EXTERNAL DATA",
+    "version": "1.0",
+    "lastChange": "2022-02-06T17:59:25.947+02:00",
+    "referenceUnitName": "kg",
+    "impactFactors": [],
+    "id": "edeb416b-5d59-4524-95dc-9c0a9261c0d0.json"}
+
 # These dictionaries are saved as .json-files
 
 with open(path_lcia_methods + '/56c9a436-2c1d-4ead-87d5-17ac168b0191.json', 'w') as fp:
@@ -964,6 +1042,9 @@ with open(path_lcia_categories +'/68be8652-dba7-443e-b439-c57d058f0388.json', 'w
 
 with open(path_lcia_categories +'/cd9a353b-371c-4aa9-bdec-89e98891d5dd.json', 'w') as fp:
   json.dump(empty_missing, fp)
+  
+with open(path_lcia_categories +'/edeb416b-5d59-4524-95dc-9c0a9261c0d0.json', 'w') as fp:
+  json.dump(empty_external, fp)
 
 ###############################################################################
 ### C R E A T E    L I S T S    F O R    I M P A C T   C A T E G O R I E S  ###
@@ -1148,9 +1229,9 @@ movedsoil_dict ={
 
 
 
-######  E S T I M A T E   M I S S I N G    A B I O T I C
+######  E S T I M A T E   M I S S I N G    A B I O T I C 
 
-# Lists for Soil are filled with the respective elementary flows.
+# Lists regarding missing abiotic values are filled with the respective elementary flows.
 
 overburden_amounts = []
 gangue_amounts = []
@@ -1161,7 +1242,7 @@ for p in allprocesses:
       if ex.flow.name == gangue.name:
         gangue_amounts.append(ex.amount)
 
-  if "07" in p.category.name or "05" in p.category.name:
+  if "07" in p.category.name or "05" in p.category.name:       
     if ex.flow.name == overburden.name:
       overburden_amounts.append(ex.amount)
 
@@ -1173,6 +1254,9 @@ missing_names =[]
 missing_catpath = []
 missing_units = []
 missing_values = []
+
+
+
 
 for f in allflows:
   if f.name == "flag missing overburden":
@@ -1198,6 +1282,34 @@ missing_dict ={
     "catpath":missing_catpath}
 
 
+######  F L A G   E X T E R N A L   D A T A 
+
+# Lists regarding flags of external data are filled with the respective elementary flows.
+
+
+external_uuid =[]
+external_names =[]
+external_catpath = []
+external_units = []
+external_values = []
+
+for f in allflows:
+  if f.name == "flag external data":
+    external_uuid.append(f.refId)
+    external_names.append(f.name)
+    external_catpath.append(f.category.name)
+    external_units.append("kg")
+    external_values.append(1)
+
+external_dict ={
+    "names": external_names,
+    "uuids": external_uuid,
+    "units": external_units,
+    "values":external_values,
+    "catpath":external_catpath}
+
+
+
 ##################################################
 ### P O P U L A T E     .J S O N - F I L E S #####
 ##################################################
@@ -1209,7 +1321,8 @@ MI_uuid = ["90768cd8-9b26-11ee-b9d1-0242ac120002.json",
              "3d2d5656-2e3e-4453-8003-c3d485356045.json",
              "8f07827d-72c0-4ae7-a708-a18e684b3f54.json",
              "68be8652-dba7-443e-b439-c57d058f0388.json",
-             "cd9a353b-371c-4aa9-bdec-89e98891d5dd.json"]
+             "cd9a353b-371c-4aa9-bdec-89e98891d5dd.json",
+          	 "edeb416b-5d59-4524-95dc-9c0a9261c0d0.json"]
 
 
 MI_dict = {
@@ -1219,37 +1332,77 @@ MI_dict = {
   	"Biotic TMR": biotic_tmr_dict,
     "Water": water_dict,
     "Moved Soil": movedsoil_dict,
-	"ESTIMATE MISSING ABIOTIC": missing_dict}
+	"ESTIMATE MISSING ABIOTIC": missing_dict,
+	"FLAG EXTERNAL DATA": external_dict}
 
-cat_names = list(MI_dict.keys())
-
-
-for i in range(0,7):
-    f_in = os.path.join(path_lcia_categories,MI_uuid[i])
-    with open(f_in, 'r+') as f:
-        thisd = json.load(f)
-        thisd['name'] = cat_names[i]
-        thisd['id']   = MI_uuid[i]
-        del thisd['impactFactors'][0:len(thisd['impactFactors'])] # delete the two factors that are still there from copying the files
-
-        for mli in range(0,len(MI_dict[cat_names[i]]["values"])):
-
-            CF = CF_generate(mli,
-                             Val = MI_dict[cat_names[i]]["values"],
-                             dnames = MI_dict[cat_names[i]]["names"],
-                             duuid = MI_dict[cat_names[i]]["uuids"],
-                             dcatpath = "",
-                             dunit = MI_dict[cat_names[i]]["units"])
+cat_names = ["Abiotic RMI",
+            "Abiotic TMR",
+            "Biotic RMI",
+            "Biotic TMR",
+            "Water",
+            "Moved Soil",
+            "ESTIMATE MISSING ABIOTIC",
+            "FLAG EXTERNAL DATA"]
 
 
-            # add new CF to json file:
-            if CF["value"] > 0:
-                thisd['impactFactors'].append(CF)
+"""
+i = 6
+print("laenge")
+print(len(MI_dict[cat_names[i]]["values"]))
+
+f_in = os.path.join(path_lcia_categories,MI_uuid[i])
+with open(f_in, 'r+') as f:
+  thisd = json.load(f)
+  thisd['name'] = cat_names[i]
+  thisd['id']   = MI_uuid[i]
+  del thisd['impactFactors'][0:len(thisd['impactFactors'])] # delete the two factors that are still there from copying the files
+  for mli in range(0,len(MI_dict[cat_names[i]]["values"])):
+    CF = CF_generate(mli,
+                     Val = MI_dict[cat_names[i]]["values"],
+                     dnames = MI_dict[cat_names[i]]["names"],
+                     duuid = MI_dict[cat_names[i]]["uuids"],
+                     dcatpath = "",
+                     dunit = MI_dict[cat_names[i]]["units"])
+    # add new CF to json file:
+    print(CF["value"])
+    if CF["value"] > 0:
+      thisd['impactFactors'].append(CF)
+        
         # wrap up and save
-        f.seek(0)        # reset file position to the beginning.
-        json.dump(thisd, f, indent=4)
-        f.truncate()     # remove remaining part
-        f.close()
+  f.seek(0)        # reset file position to the beginning.
+  json.dump(thisd, f, indent=4)
+  f.truncate()     # remove remaining part
+  f.close()
+
+
+"""
+
+
+for i in range(0,8):
+  print(i)
+  f_in = os.path.join(path_lcia_categories,MI_uuid[i])
+  with open(f_in, 'r+') as f:
+    thisd = json.load(f)
+    thisd['name'] = cat_names[i]
+    thisd['id']   = MI_uuid[i]
+    del thisd['impactFactors'][0:len(thisd['impactFactors'])] # delete the two factors that are still there from copying the files
+    
+    for mli in range(0,len(MI_dict[cat_names[i]]["values"])):
+      CF = CF_generate(mli,
+                       Val = MI_dict[cat_names[i]]["values"],
+                       dnames = MI_dict[cat_names[i]]["names"],
+                       duuid = MI_dict[cat_names[i]]["uuids"],
+                       dcatpath = "",
+                       dunit = MI_dict[cat_names[i]]["units"])
+      # add new CF to json file:
+      if CF["value"] > 0:
+        thisd['impactFactors'].append(CF)
+        
+        # wrap up and save
+    f.seek(0)        # reset file position to the beginning.
+    json.dump(thisd, f, indent=4)
+    f.truncate()     # remove remaining part
+    f.close()
 
 
 

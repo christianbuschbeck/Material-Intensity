@@ -306,80 +306,81 @@ for p in allprocesses:
 overburden_list = [
   
   #Bauxite
-  ["bauxite mine operation | bauxite","Global", 0.5018],    #aus ecoinvent documentation: 1m dicke * 2.6 g/cm^2 
+  ["bauxite mine operation | bauxite","Global", 0.5018],    # aus ecoinvent report v2.1 report No 10 Aluminium 5.1.1: 1m dicke * 2.6 g/cm^2 
 
   # Iron
-  ["iron ore mine operation and beneficiation | iron ore concentrate","Canada, Qu",0.255], # aus ecoinvent datensatz
-  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe","Global",63/46 * 0.255],# aus ecoinvent datensatz
+  ["iron ore mine operation, 63% Fe | iron ore, crude ore, 63% Fe","India",1.85],         # aus ecoinvent report v2.1 report No 10 dataset "Iron ore 46% Fe, at mine" remarks
+  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe","Global", 1.85],       # aus ecoinvent report v2.1 report No 10 dataset "Iron ore 46% Fe, at mine" remarks
+  ["iron ore mine operation and beneficiation | iron ore concentrate","Canada, Qu",1.85], # aus ecoinvent report v2.1 report No 10 dataset "Iron ore 46% Fe, at mine" remarks
 	
   #Copper
-  ["gold mine operation and refining | copper, cathode","Sweden",392],                                                 # global database
-  ["platinum group metal mine operation, ore with high palladium content | copper, cathode","Russian Federation", 392], #global database
-  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",392],         #global database
+  ["gold mine operation and refining | copper, cathode","Sweden",291],                                                  #global database, generic
+  ["platinum group metal mine operation, ore with high palladium content | copper, cathode","Russian Federation", 291], #global database, generic
+  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",291],         #global database, generic
   #Copper concentrate
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",88],          #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",75],             #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",102],             #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",100],             #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",117],         #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",80],         #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",100],     #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",100],#global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",305],     #global database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",445],            #global database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",70],          #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",69],             #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",121],             #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",75],              #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",109],         #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",60],         #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",75],      #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",75], #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",309],     #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",264],            #global database, country specific
   
-  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",75],  #global database
-  ["molybdenite mine operation | copper concentrate, sulfide ore","Global",100],                       #global database
+  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",69], #global database, country specific
+  ["molybdenite mine operation | copper concentrate, sulfide ore","Global",75],                       #global database, generic
 
   #Gold
-  ["silver-gold mine operation with refinery | gold","Chile",2779394],         #global database
-  ["silver-gold mine operation with refinery | gold","Rest-of-World",2779394], #global database
+  ["silver-gold mine operation with refinery | gold","Chile",1912966],         #global database, generic
+  ["silver-gold mine operation with refinery | gold","Rest-of-World",1912966], #global database, generic
  
-  ["gold mine operation and gold production, unrefined | gold, unrefined","South Africa",2779394], #global database
-  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",2779394],#global database
-  ["gold mine operation and refining | gold","Sweden",2779394],                                    #global database
-  ["gold-silver mine operation with refinery | gold","Papua New Guinea",161541],                   #global database
-  ["gold-silver mine operation with refinery | gold","Canada, Qu",1689944],                        #global database
-  ["gold-silver mine operation with refinery | gold","Rest-of-World",2779394],                     #global database
-  ["gold-silver mine operation with refinery | gold","Rest-of-World",2779394],                     #global database
-  ["gold production | gold","Canada",1689944],                                                     #global database
-  ["gold production | gold","Australia",1580817],                                                  #global database
-  ["gold production | gold","Tanzania, United Republic of",1784282],                               #global database
-  ["gold production | gold","United States",5055980],                                              #global database
+  ["gold mine operation and gold production, unrefined | gold, unrefined","South Africa",1912966], #global database, generic
+  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",1912966],#global database, generic
+  ["gold mine operation and refining | gold","Sweden",1912966],                                    #global database, generic
+  ["gold-silver mine operation with refinery | gold","Papua New Guinea",200793],                   #global database, country specific
+  ["gold-silver mine operation with refinery | gold","Canada, Qu",253051],                         #global database, country specific
+  ["gold-silver mine operation with refinery | gold","Rest-of-World",1912966],                     #global database, generic
+  ["gold-silver mine operation with refinery | gold","Rest-of-World",1912966],                     #global database, generic
+  ["gold production | gold","Canada",253051],                                                      #global database, country specific
+  ["gold production | gold","Australia",1573988],                                                  #global database, country specific
+  ["gold production | gold","Tanzania, United Republic of",1793320],                               #global database, country specific
+  ["gold production | gold","United States",5093769],                                              #global database, country specific
 
   #Silver
-  ["gold mine operation and refining | silver","Sweden",44146],                  #global database
+  ["gold mine operation and refining | silver","Sweden",30970],                  #global database, generic
   
-  ["gold-silver mine operation with refinery | silver","Papua New Guinea",44146],#global database
-  ["gold-silver mine operation with refinery | silver","Canada, Qu",31728],      #global database
-  ["gold-silver mine operation with refinery | silver","Rest-of-World",44146],   #global database
+  ["gold-silver mine operation with refinery | silver","Papua New Guinea",30970],#global database, generic
+  ["gold-silver mine operation with refinery | silver","Canada, Qu",27409],      #global database,country specific
+  ["gold-silver mine operation with refinery | silver","Rest-of-World",30970],   #global database, generic
   
-  ["silver-gold mine operation with refinery | silver","Chile",44146],           #global database
-  ["silver-gold mine operation with refinery | silver","Rest-of-World",44146],   #global database
+  ["silver-gold mine operation with refinery | silver","Chile",30970],           #global database, generic
+  ["silver-gold mine operation with refinery | silver","Rest-of-World",30970],   #global database, generic
   
-  ["silver mine operation with extraction | silver, unrefined","Peru",27734],    #global database
+  ["silver mine operation with extraction | silver, unrefined","Peru",26580],    #global database,country specific
 
   #Lead
-  ["gold mine operation and refining | lead","Sweden",10.7],                             # !! CHECK !!
+  #["gold mine operation and refining | lead","Sweden",10.7],                             # !! CHECK !!
   #Lead concentrate
-  ["gold-silver mine operation and beneficiation | lead concentrate","Canada, Qu",5.7],  # !! CHECK !!
-  ["silver mine operation with extraction | lead concentrate","Peru",5.7],               # !! CHECK !!
+  #["gold-silver mine operation and beneficiation | lead concentrate","Canada, Qu",5.7],  # !! CHECK !!
+  #["silver mine operation with extraction | lead concentrate","Peru",5.7],               # !! CHECK !!
 
   #Molybdenite
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Canada",1123],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Chile",1136],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","China",1136],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Rest-of-World",1136],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Russian Federation",1136],
-  ["copper mine operation and beneficiation, sulfide ore | molybdenite","United States",1136],
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Canada",1125],              #global database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Chile",1134],               #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","China",1134],               #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Rest-of-World",1134],       #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","Russian Federation",1134],  #global database, generic
+  ["copper mine operation and beneficiation, sulfide ore | molybdenite","United States",1134],       #global database, generic
   
-  ["molybdenite mine operation | molybdenite","Global",1136],
+  ["molybdenite mine operation | molybdenite","Global",1136],                                        #global database, generic
 
   #Zinc
-  ["gold mine operation and refining | zinc","Sweden",75],
+  ["gold mine operation and refining | zinc","Sweden",76], #global database, generic
   #Zinc concentrate
-  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Qu",38],
-  ["silver mine operation with extraction | zinc concentrate","Peru",39]]
+  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Qu",40], #global database, country specific
+  ["silver mine operation with extraction | zinc concentrate","Peru",40]]              #global database, country specific
 
 # The overburden list is iterated and the overburden values are inserted in the respective processes
   
@@ -461,79 +462,79 @@ allprocesses = dao_p.getAll()
 gangue_list = [
   # Iron
   ["iron ore mine operation and beneficiation | iron ore concentrate |","Canada, Q",0.4995],    # aus ecoinvent
-  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe |","Global",63/46 * 0.4995],  # aus ecoinvent
+  ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe |","Global",46/63 * 0.4995],  # aus ecoinvent
 
   # Copper
-  ["platinum group metal mine operation, ore with high palladium content | copper, cathode |","Russian Federation", 215], # gobal database
-  ["gold mine operation and refining | copper, cathode |","Sweden",41],                                                   # gobal database
-  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",182],           # gobal database
+  ["platinum group metal mine operation, ore with high palladium content | copper, cathode |","Russian Federation", 212.0], # gobal database, country specific
+  ["gold mine operation and refining | copper, cathode |","Sweden",39.0],                                                   # gobal database, country specific
+  ["copper production, cathode, solvent extraction and electrowinning process | copper, cathode","Global",119.0],           # gobal database, generic
   
   # Copper concentrate
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",62],         # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",21],            # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",79],             # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",47],             # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",47],         # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",41],        # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",47],     # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",55],# gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",59],   # gobal database
-  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",29],          # gobal database
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Australia",22.0],         # gobal database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Canada",14.0],            # gobal database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Chile",67.0],             # gobal database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","China",75.0],             # gobal database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Indonesia",75.0],         # gobal database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Kazakhstan",29.0],        # gobal database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Rest-of-World",75.0],     # gobal database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Russian Federation",75.0],# gobal database, generic
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","United States",85.0],     # gobal database, country specific
+  ["copper mine operation and beneficiation, sulfide ore | copper concentrate, sulfide ore","Zambia",40.0],            # gobal database, country specific
   
-  ["molybdenite mine operation | copper concentrate, sulfide ore |","Global",47],                      # gobal database
-  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",21],  # gobal database
+  ["molybdenite mine operation | copper concentrate, sulfide ore |","Global",75.0],                      # gobal database, generic
+  ["gold-silver mine operation and beneficiation | copper concentrate, sulfide ore","Canada, Qu",14.0],  # gobal database, country specific
 
 
   # Gold
-  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",24652],  # gobal database
-  ["gold mine operation and gold production, unrefined | gold, unrefined","Zambia",37],         # gobal database
-  ["gold mine operation and refining | gold |","Sweden",1077247],                                    # gobal database
-  ["gold production | gold |","Australia",115447],                                                  # gobal database
-  ["gold production | gold |","Canada",636964],                                                     # gobal database
-  ["gold production | gold |","Tanzania, United Republic of",359113],                               # gobal database
-  ["gold production | gold |","United States",509245],                                              # gobal database
-  ["silver-gold mine operation with refinery | gold |","Chile",976384],                             # gobal database
-  ["silver-gold mine operation with refinery | gold |","Rest-of-World",24652],                     # gobal database
-  ["gold-silver mine operation with refinery | gold |","Canada, Q",636964],                         # gobal database
-  ["gold-silver mine operation with refinery | gold |","Papua New Guinea",1327458],                  # gobal database
-  ["gold-silver mine operation with refinery | gold |","Rest-of-World",24652],                     # gobal database
+  ["gold mine operation and gold production, unrefined | gold, unrefined","Rest-of-World",511257.0],  # gobal database, generic
+  ["gold mine operation and gold production, unrefined | gold, unrefined","Zambia",34.0],             # gobal database, country specific
+  ["gold mine operation and refining | gold |","Sweden",1000340.0],                                   # gobal database, country specific
+  ["gold production | gold |","Australia",1627.0],                                                    # gobal database, country specific
+  ["gold production | gold |","Canada",520026.0],                                                     # gobal database, country specific
+  ["gold production | gold |","Tanzania, United Republic of",334465.0],                               # gobal database, country specific
+  ["gold production | gold |","United States",509221.0],                                              # gobal database, country specific
+  ["silver-gold mine operation with refinery | gold |","Chile",938750.0],                             # gobal database, country specific
+  ["silver-gold mine operation with refinery | gold |","Rest-of-World",511257.0],                     # gobal database, generic
+  ["gold-silver mine operation with refinery | gold |","Canada, Q",520026.0],                         # gobal database, country specific
+  ["gold-silver mine operation with refinery | gold |","Papua New Guinea",1258757.0],                 # gobal database, country specific
+  ["gold-silver mine operation with refinery | gold |","Rest-of-World",511257.0],                     # gobal database, generic
 
   # Molybdenum
   ["molybdenite mine operation | molybdenite |","Global",1414],   # gobal database
 
   # Silver
-  ["gold-silver mine operation with refinery | silver |","Canada, Q",983441],        # gobal database
-  ["gold-silver mine operation with refinery | silver |","Papua New Guinea",22682],  # gobal database
-  ["gold-silver mine operation with refinery | silver |","Rest-of-World",22682],     # gobal database
+  ["gold-silver mine operation with refinery | silver |","Canada, Q",14185.0],        # gobal database, country specific
+  ["gold-silver mine operation with refinery | silver |","Papua New Guinea",21172.0], # gobal database, country specific
+  ["gold-silver mine operation with refinery | silver |","Rest-of-World",9432.0],     # gobal database, generic
   
-  ["gold mine operation and refining | silver |","Sweden",16708],                  # gobal database
-  ["silver-gold mine operation with refinery | silver |","Chile",10309],           # gobal database
-  ["silver-gold mine operation with refinery | silver |","Rest-of-World",22682],   # gobal database
+  ["gold mine operation and refining | silver |","Sweden",16334.0],                 # gobal database, country specific
+  ["silver-gold mine operation with refinery | silver |","Chile",9089.0],           # gobal database, country specific
+  ["silver-gold mine operation with refinery | silver |","Rest-of-World",9432.0],   # gobal database, generic
 
   # Lead
-  ["gold mine operation and refining | lead","Sweden",28],  # gobal database
+  ["gold mine operation and refining | lead","Sweden",31.0],                             # gobal database, generic
   # Lead concentrate
-  ["gold-silver mine operation and beneficiation | lead concentrate","Canada, Q",18],  # gobal database
+  ["gold-silver mine operation and beneficiation | lead concentrate","Canada, Q",10.0],  # gobal database, country specific
 
   # Zinc
-  ["gold mine operation and refining | zinc","Sweden",11],   # gobal database
+  ["gold mine operation and refining | zinc","Sweden",11.0],                             # gobal database, country ,specific
   # Zinc concentrate
-  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Q",24],  # gobal database
+  ["gold-silver mine operation and beneficiation | zinc concentrate","Canada, Q",18.0],  # gobal database, country specific
 
   # Nickel
-  ["platinum group metal mine operation, ore with high palladium content | nickel, class","Russian Federation",93],  # gobal database
+  ["platinum group metal mine operation, ore with high palladium content | nickel, class","Russian Federation",93.0],  # gobal database, country specific
 
   # Palladium
-  ["platinum group metal mine operation, ore with high palladium content | palladium","Russian Federation",2722423], # gobal database
+  ["platinum group metal mine operation, ore with high palladium content | palladium","Russian Federation",3127297.0], # gobal database, country specific
 
   # Platinum
-  ["platinum group metal mine operation, ore with high palladium content | platinum","Russian Federation",2298117],  # gobal database
+  ["platinum group metal mine operation, ore with high palladium content | platinum","Russian Federation",2534893.0],  # gobal database, country specific
 
   # Rhodium
-  ["platinum group metal mine operation, ore with high palladium content | rhodium","Russian Federation",864627.3],  ## 27 -> Strange
+  ["platinum group metal mine operation, ore with high palladium content | rhodium","Russian Federation",28.0],        # gobal database, country specific
 
   # Uranium
-  ["uranium production, in yellowcake, in-situ leaching | uranium, in yellowcake","Global",8384]]  # gobal database
+  ["uranium production, in yellowcake, in-situ leaching | uranium, in yellowcake","Global",8384]]  # gobal database, generic
 
 
 # Mining processes are updated with the respective value

@@ -306,8 +306,13 @@ for p in allprocesses:
 overburden_list = [
   
   #Bauxite
-  ["bauxite mine operation | bauxite","Global", 0.5018],    # aus ecoinvent report v2.1 report No 10 Aluminium 5.1.1: 1m dicke * 2.6 g/cm^2 
-
+  ["bauxite mine operation | bauxite","Global", 0.1904762],    # aus ecoinvent report 10 v.2.1 - 1m cap thickness vs. 3 to 7m ore thickness  
+  
+  #Baryte
+  ["barite production | barite","Rest-of-World", 0.09],    # aus ANDHRA PRADESH MINERAL DEVELOPMENT CORPORATION LIMITEDreport
+  ["barite production | barite","Europe", 0.09],    # aus ANDHRA PRADESH MINERAL DEVELOPMENT CORPORATION LIMITEDreport
+  ["barite production | barite","Canada, Qu", 0.09],    # aus ANDHRA PRADESH MINERAL DEVELOPMENT CORPORATION LIMITEDreport
+  
   # Iron
   ["iron ore mine operation, 63% Fe | iron ore, crude ore, 63% Fe","India",1.85],         # aus ecoinvent report v2.1 report No 10 dataset "Iron ore 46% Fe, at mine" remarks
   ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe","Global", 1.85],       # aus ecoinvent report v2.1 report No 10 dataset "Iron ore 46% Fe, at mine" remarks
@@ -401,7 +406,8 @@ for mp in overburden_list:
     
     if location in p.location.name:
       foundsomething = True      
-      isin = False
+      isin_ov  = False
+      isin_ext = False
 
       for ex in p.exchanges:
         if ex.isInput == True:
@@ -409,17 +415,17 @@ for mp in overburden_list:
             ex.amount = overburden_amount
             #ex.unit = kg
             dao_p.update(p)
-            isin = True
+            isin_ov = True
             break
           
           if ex.flow.name == external_data_flow.name:
             ex.amount = overburden_amount
             #ex.unit = kg
             dao_p.update(p)
-            isin = True
+            isin_ext = True
             break
 
-      if isin == False:
+      if isin_ov == False:
 
         ex = model.Exchange()
         ex.isInput = True
@@ -430,6 +436,8 @@ for mp in overburden_list:
         p.exchanges.add(ex)
         dao_p.update(p)
 
+      if isin_ext == False:
+        
         ex = model.Exchange()
         ex.isInput = True
         ex.flow = external_data_flow
@@ -460,6 +468,18 @@ allprocesses = dao_p.getAll()
 
 
 gangue_list = [
+  
+  #Manganese
+  ["manganese concentrate production | manganese concentrate","Global", 0],    # manganese is the ore
+  
+  #Bauxite
+  ["bauxite mine operation | bauxite","Global", 0],    # bauxite is the ore
+  
+  # Barite
+  ["barite production | barite |","Europe", 0.333],           # from ore grade in ecoinvent documentation https://ecoquery.ecoinvent.org/3.9.1/cutoff/dataset/7053/documentation
+  ["barite production | barite |","Rest-of-World",0.333],     # from ore grade in ecoinvent documentation https://ecoquery.ecoinvent.org/3.9.1/cutoff/dataset/7053/documentation
+  ["barite production | barite |","Canada, Qu", 0.333],       # from ore grade in ecoinvent documentation https://ecoquery.ecoinvent.org/3.9.1/cutoff/dataset/7053/documentation
+  
   # Iron
   ["iron ore mine operation and beneficiation | iron ore concentrate |","Canada, Q",0.4995],    # aus ecoinvent
   ["iron ore mine operation, 46% Fe | iron ore, crude ore, 46% Fe |","Global",46/63 * 0.4995],  # aus ecoinvent
@@ -539,9 +559,11 @@ gangue_list = [
 
 # Mining processes are updated with the respective value
 
+
 for mp in gangue_list:
   mining_process_name_raw = mp[0]
-  gangue_amount    = mp[1]
+  location                = mp[1]
+  gangue_amount           = mp[2]
 
   for ap in allprocesses:
     if mining_process_name_raw in ap.name:
@@ -551,10 +573,10 @@ for mp in gangue_list:
   mining_processes = dao_p.getForName(mining_processes_name_explicit)
   foundsomething = False
   for p in mining_processes:
-    
     if location in p.location.name:
       foundsomething = True
-      isin = False
+      isin_ga  = False
+      isin_ext = False
       
       for ex in p.exchanges:
         if ex.isInput == True:
@@ -562,17 +584,18 @@ for mp in gangue_list:
             ex.amount = gangue_amount
             #ex.unit = kg
             dao_p.update(p)
-            isin = True
+            isin_ga = True
             break
           
           if ex.flow.name == external_data_flow.name:
             ex.amount = gangue_amount
             #ex.unit = kg
             dao_p.update(p)
-            isin = True
+            isin_ext = True
             break
+      
 
-      if isin == False:
+      if isin_ga == False:
         
         ex = model.Exchange()
         ex.isInput = True
@@ -582,6 +605,8 @@ for mp in gangue_list:
         ex.flowPropertyFactor = gangue.getReferenceFactor()
         p.exchanges.add(ex)
         dao_p.update(p)
+
+      if isin_ext == False:
         
         ex = model.Exchange()
         ex.isInput = True
@@ -1346,41 +1371,10 @@ cat_names = ["Abiotic RMI",
             "FLAG EXTERNAL DATA"]
 
 
-"""
-i = 6
-print("laenge")
-print(len(MI_dict[cat_names[i]]["values"]))
 
-f_in = os.path.join(path_lcia_categories,MI_uuid[i])
-with open(f_in, 'r+') as f:
-  thisd = json.load(f)
-  thisd['name'] = cat_names[i]
-  thisd['id']   = MI_uuid[i]
-  del thisd['impactFactors'][0:len(thisd['impactFactors'])] # delete the two factors that are still there from copying the files
-  for mli in range(0,len(MI_dict[cat_names[i]]["values"])):
-    CF = CF_generate(mli,
-                     Val = MI_dict[cat_names[i]]["values"],
-                     dnames = MI_dict[cat_names[i]]["names"],
-                     duuid = MI_dict[cat_names[i]]["uuids"],
-                     dcatpath = "",
-                     dunit = MI_dict[cat_names[i]]["units"])
-    # add new CF to json file:
-    print(CF["value"])
-    if CF["value"] > 0:
-      thisd['impactFactors'].append(CF)
-        
-        # wrap up and save
-  f.seek(0)        # reset file position to the beginning.
-  json.dump(thisd, f, indent=4)
-  f.truncate()     # remove remaining part
-  f.close()
-
-
-"""
 
 
 for i in range(0,8):
-  print(i)
   f_in = os.path.join(path_lcia_categories,MI_uuid[i])
   with open(f_in, 'r+') as f:
     thisd = json.load(f)

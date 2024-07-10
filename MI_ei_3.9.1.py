@@ -275,14 +275,14 @@ elem_flow_ground = gangue
 # flows that are introduced and should be stored in the category "biotic resources"
 
 for f in allflows:
-  if "Anhydrite" in f.name and f.category.name == "biotic":
+  if f.category.name == "biotic" and f.category.category.name == "Resource" and f.referenceUnit.name == "kg":
     elem_flow_biotic = f
 
 # An arbitrary flow from the category "unspecified" is extracted to serve as template for
 # flows that are introduced and should be stored in the category "unspecified"
 
 for f in allflows:
-  if "Actinium" in f.name and f.category.name == "unspecified":
+  if f.category.name == "unspecified" and f.category.category.name == "Resource" and f.referenceUnit.name == "kg":
     elem_flow_unspec = f
 
 

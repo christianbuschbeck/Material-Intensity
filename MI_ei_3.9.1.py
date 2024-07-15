@@ -201,6 +201,7 @@ def mean_function(x):
 db         = Database.get()
 ei_version = db.name
 
+
 # Dao objects are set. Those are used to iterate over the respective Model Type (e.g. Processes or Flows etc.)
 dao_fp = FlowPropertyDao(db)
 dao_c  = CategoryDao(db)
@@ -208,13 +209,15 @@ dao_p  = ProcessDao(db)
 dao_f  = FlowDao(db)
 dao_u  = UnitGroupDao(db)
 dao_m  = ImpactMethodDao(db)
-dao_i = ImpactCategoryDao(db)
+dao_i  = ImpactCategoryDao(db)
 
 allflows      = dao_f.getAll()
 allprocesses  = dao_p.getAll()
 allmethods    = dao_m.getAll()
 allimpcat     = dao_i.getAll()
 allcategories = dao_c.getAll()
+allunits      = dao_u.getAll()
+allproperties = dao_fp.getAll()
 
 ###################################################
 ###  D e l e t e  e x i s t i n g   M e t h o d  ##    ###
@@ -239,17 +242,13 @@ for c in allcategories:
 
 # Mass (in kg) is the only used unit in this LCIA-Method
 
-units = dao_u.getAll()
-
-for u in units:
+for u in allunits:
   if u.name =="Units of mass":
     for uu in u.units:
     	if uu.name== "kg":
           kg = uu
 
-properties = dao_fp.getAll()
-
-for prop in properties:
+for prop in allproperties:
   if prop.name =="Mass":
     mass = prop
 
@@ -404,21 +403,23 @@ for p in allprocesses:
   # Market and treatment activities that deal with waste flows are not mining activities
   # and should therefore not include overburden
   if "market" not in p.name and "treatment" not in p.name:
-
+    
+    internalIDs = []
     for ex in p.exchanges:
+      internalIDs.append(ex.internalId)
       if ex.flow.name =="Overburden":
         isin_ov_elem = True
 
 	  # If the process contains one of the waste flows, an exchange for overburden is created.
       # Because one process can have several overburden waste flows, their amounts is cumulated.
       if ex.flow.name in overburden_waste_flows:
-        amount = amount + ex.amount 
-        ex_ov = model.Exchange()
-        ex_ov.isInput = True
-        ex_ov.flow = overburden
-        ex_ov.amount = amount
-        ex_ov.unit = kg
-        ex_ov.flowPropertyFactor = gangue.getReferenceFactor()
+        amount                   = amount + ex.amount 
+        ex_ov                    = model.Exchange()
+        ex_ov.isInput            = True
+        ex_ov.flow               = overburden
+        ex_ov.amount             = amount
+        ex_ov.unit               = kg
+        ex_ov.flowPropertyFactor = overburden.referenceFactor 
 
         isin_ov_waste = True
 
@@ -433,15 +434,16 @@ for p in allprocesses:
     # the exchange for the overburden elementary flow is added
     if isin_ov_waste == True:
       if isin_ov_elem == False:
+        ex_ov.internalId = max(internalIDs)
         p.exchanges.add(ex_ov)
         dao_p.update(p)
 
 
-        
+
 # Because not every mining process contains information regarding overburden, 
 # external data was used to fill these gaps. 
 # In the following list the coressponding overburden values are stored.
-# The sources given are given as comments.
+# The sources are documented as comments.
 
 overburden_list = [
   
@@ -560,7 +562,9 @@ for mp in overburden_list:
 
       # Iterating over exchanges and report whether overburden as elementary flow and 
       # the flow indicating external data are present. If so, the amount is updated.
+      internalIDs = []
       for ex in p.exchanges:
+        internalIDs.append(ex.internalId)
         if ex.isInput == True:
           if ex.flow.name == overburden.name:
             ex.amount = overburden_amount
@@ -577,24 +581,29 @@ for mp in overburden_list:
       # If overburden is not present, a new exchange is created and added.   
       if isin_ov == False:
 
-        ex = model.Exchange()
-        ex.isInput = True
-        ex.flow = overburden
-        ex.amount = overburden_amount
-        ex.unit = kg
-        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        ex                    = model.Exchange()
+        ex.isInput            = True
+        ex.flow               = overburden
+        ex.amount             = overburden_amount
+        ex.unit               = kg        
+        ex.flowPropertyFactor = overburden.referenceFactor   
+        ex.internalId         = max(internalIDs)
+
         p.exchanges.add(ex)
         dao_p.update(p)
 
       # If the flow indicating external data is not present, a new exchange is created and added.   
       if isin_ext == False:
         
-        ex = model.Exchange()
-        ex.isInput = True
-        ex.flow = external_data_flow
-        ex.amount = overburden_amount
-        ex.unit = kg
-        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        ex                    = model.Exchange()
+        ex.isInput            = True
+        ex.flow               = external_data_flow
+        ex.amount             = overburden_amount
+        ex.unit               = kg
+        ex.flowPropertyFactor = external_data_flow.referenceFactor
+        #internalIDs.append(max(internalIDs) + 1)
+        ex.internalId         = max(internalIDs)
+        
         p.exchanges.add(ex)
         dao_p.update(p)
       
@@ -739,7 +748,9 @@ for mp in gangue_list:
       # The exchanges of the mining process are iterated to identify
       # 1) the elementary flow for gangue 
       # 2) the flow that flags external data
+      internalIDs = []
       for ex in p.exchanges:
+        internalIDs.append(ex.internalId)
         if ex.isInput == True:
           
           # If gangue is present, its amount updated
@@ -757,24 +768,28 @@ for mp in gangue_list:
       # If gangue is not present, it is added  
       if isin_ga == False:
         
-        ex = model.Exchange()
-        ex.isInput = True
-        ex.flow = gangue
-        ex.amount = gangue_amount
-        ex.unit = kg
-        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        ex                    = model.Exchange()
+        ex.isInput            = True
+        ex.flow               = gangue
+        ex.amount             = gangue_amount
+        ex.unit               = kg
+        ex.flowPropertyFactor = gangue.referenceFactor
+        ex.internalId         = max(internalIDs)
+        
         p.exchanges.add(ex)
         dao_p.update(p)
 
       # If the flow that flags external data is not present, it is added 
       if isin_ext == False:
         
-        ex = model.Exchange()
-        ex.isInput = True
-        ex.flow = external_data_flow
-        ex.amount = gangue_amount
-        ex.unit = kg
-        ex.flowPropertyFactor = gangue.getReferenceFactor()
+        ex                    = model.Exchange()
+        ex.isInput            = True
+        ex.flow               = external_data_flow
+        ex.amount             = gangue_amount
+        ex.unit               = kg
+        ex.flowPropertyFactor = gangue.referenceFactor
+        ex.internalId         = max(internalIDs)
+        
         p.exchanges.add(ex)
         dao_p.update(p)
 
@@ -857,7 +872,9 @@ for p in allprocesses:
     # 2) Any flow of the category "in ground"
     # 2) the elementary flow for gangue 
     # 3) the elementary flow for overburden
+    internalIDs = []
     for ex in p.exchanges:
+      internalIDs.append(ex.internalId)
       if "in ground" in ex.flow.category.name:
         isin_ig = True
       if ex.flow.name == gangue.name:
@@ -874,12 +891,14 @@ for p in allprocesses:
           missing_gangue.append(p.name) # The list containing process names is updated
           
           # If the flag for missing gangue is not present, it is added (with a value of 1)
-          ex = model.Exchange()
-          ex.isInput = True
-          ex.flow = missinggangue_flow
-          ex.amount = 1
-          ex.unit = kg
-          ex.flowPropertyFactor = gangue.getReferenceFactor()
+          ex                    = model.Exchange()
+          ex.isInput            = True
+          ex.flow               = missinggangue_flow
+          ex.amount             = 1
+          ex.unit               = kg
+          ex.flowPropertyFactor = missinggangue_flow.referenceFactor
+          ex.internalId         = max(internalIDs)
+          
           p.exchanges.add(ex)
           dao_p.update(p)
           
@@ -889,12 +908,14 @@ for p in allprocesses:
           missing_overburden.append(p.name) # The list containing process names is updated
           
           # If the flag for missing overburden is not present, it is added (with a value of 1)
-          ex = model.Exchange()
-          ex.isInput = True
-          ex.flow = missingoverburden_flow
-          ex.amount = 1
-          ex.unit = kg
-          ex.flowPropertyFactor = gangue.getReferenceFactor()
+          ex                    = model.Exchange()
+          ex.isInput            = True
+          ex.flow               = missingoverburden_flow
+          ex.amount             = 1
+          ex.unit               = kg
+          ex.flowPropertyFactor = missingoverburden_flow.referenceFactor
+          ex.internalId         = max(internalIDs)
+          
           p.exchanges.add(ex)
           dao_p.update(p)
   
@@ -1004,18 +1025,22 @@ for p in allprocesses:
       # The booleans isin_x indicate, whether the respective flow is present in a process
       isin_biomass = False # Biomass as elementary flow
       
+      internalIDs = []
       for ex in p.exchanges:
+        internalIDs.append(ex.internalId)
         if "Biomass, used" in ex.flow.name:
           isin_biomass = True
 
       # If the quantitative reference is kg and biomass is not present, it is added    
       if p.quantitativeReference.unit.name == "kg" and isin_biomass == False:
-        ex_used         = model.Exchange()
-        ex_used.isInput = True
-        ex_used.flow    = biomass_used
-        ex_used.amount  = 1
-        ex_used.unit    = kg
-        ex_used.flowPropertyFactor = gangue.getReferenceFactor()
+        ex_used                    = model.Exchange()
+        ex_used.isInput            = True
+        ex_used.flow               = biomass_used
+        ex_used.amount             = 1
+        ex_used.unit               = kg
+        ex_used.flowPropertyFactor = biomass_used.referenceFactor
+        ex_used.internalId         = max(internalIDs)
+        
         p.exchanges.add(ex_used)
         dao_p.update(p)
       
@@ -1048,8 +1073,10 @@ for p in allprocesses:
       mass_per_energy = 1.0/15.0 
     if "softwood" in p.name:
       mass_per_energy = 1.0/15.7 
- 
+    
+    internalIDs = []  
     for ex in p.exchanges:
+      internalIDs.append(ex.internalId)
       # Identify, whether used biomass elementary flow is present or not 
       if "Biomass, used" in ex.flow.name:
         isin_biomass = True
@@ -1065,12 +1092,14 @@ for p in allprocesses:
     # The amount is the product of the inverse energy density and the energy content.
     if isin_energy == True and isin_biomass == False:
 
-      ex_used         = model.Exchange()
-      ex_used.isInput = True
-      ex_used.flow    = biomass_used
-      ex_used.amount  = mass_per_energy * energy_amount
-      ex_used.unit    = kg
-      ex_used.flowPropertyFactor = gangue.getReferenceFactor()
+      ex_used                    = model.Exchange()
+      ex_used.isInput            = True
+      ex_used.flow               = biomass_used
+      ex_used.amount             = mass_per_energy * energy_amount
+      ex_used.unit               = kg
+      ex_used.flowPropertyFactor = biomass_used.referenceFactor
+      ex_used.internalId         = max(internalIDs)
+      
       p.exchanges.add(ex_used)
       dao_p.update(p)
     
@@ -1099,7 +1128,9 @@ for p in allprocesses:
   isin_energy  = False  # Energy content as elementary flow
   isin_biomass = False  # Used Biomass as elementary flow
   
+  internalIDs = []
   for ex in p.exchanges:
+    internalIDs.append(ex.internalId)
     
 	# Identify, whether used biomass elementary flow is present or not 
     if "Biomass, used" in ex.flow.name:
@@ -1116,12 +1147,14 @@ for p in allprocesses:
   # The amount is the product of the inverse energy density and the energy content.    
   if isin_energy == True and isin_biomass == False:
     
-    ex_used         = model.Exchange()
-    ex_used.isInput = True
-    ex_used.flow    = biomass_used
-    ex_used.amount  = mass_per_energy_average * energy_amount
-    ex_used.unit    = kg
-    ex_used.flowPropertyFactor = gangue.getReferenceFactor()
+    ex_used                    = model.Exchange()
+    ex_used.isInput            = True
+    ex_used.flow               = biomass_used
+    ex_used.amount             = mass_per_energy_average * energy_amount
+    ex_used.unit               = kg
+    ex_used.flowPropertyFactor = biomass_used.referenceFactor
+    ex.internalId              = max(internalIDs)
+    
     p.exchanges.add(ex_used)
     dao_p.update(p)
 
@@ -1147,7 +1180,9 @@ for p in allprocesses:
   isin_biomass_used   = False  # Used biomass as elementary flow
   isin_biomass_unused = False  # Unused biomass as elementary flow
   
+  internalIDs = []
   for ex in p.exchanges:
+    internalIDs.append(ex.internalId)
     
     # Identify, whether used biomass elementary flow is present or not 
     # If so, the amount is stored
@@ -1194,12 +1229,14 @@ for p in allprocesses:
   # If used biomass is present, and unused biomass is not, the latter is added
   if isin_biomass_used == True and isin_biomass_unused == False:
     
-    ex_unused         = model.Exchange()
-    ex_unused.isInput = True
-    ex_unused.flow    = biomass_unused
-    ex_unused.amount  = biomass_used_amount * residue_ratio
-    ex_unused.unit    = kg
-    ex_unused.flowPropertyFactor = gangue.getReferenceFactor()
+    ex_unused                    = model.Exchange()
+    ex_unused.isInput            = True
+    ex_unused.flow               = biomass_unused
+    ex_unused.amount             = biomass_used_amount * residue_ratio
+    ex_unused.unit               = kg
+    ex_unused.flowPropertyFactor = biomass_unused.referenceFactor
+    ex_unused.internalId         = max(internalIDs)
+    
     p.exchanges.add(ex_unused)
     dao_p.update(p)    
       
@@ -1265,7 +1302,9 @@ for tp in tillage_list:
     isin_sm = False  # Moved soil as elementary flow
 
     # Check, whether moved soil is already present
+    internalIDs = []
     for ex in p.exchanges:
+      internalIDs.append(ex.internalId)
       if ex.isInput == True:
         if ex.flow.name == soilmoved.name:
           ex.amount = soilmoved_amount
@@ -1275,12 +1314,14 @@ for tp in tillage_list:
     # If soilmoved is not present, it is added
     if isin_sm == False:
 
-      ex = model.Exchange()
-      ex.isInput = True
-      ex.flow = soilmoved
-      ex.amount = soilmoved_amount
-      ex.unit = kg
-      ex.flowPropertyFactor = soilmoved.getReferenceFactor()
+      ex                    = model.Exchange()
+      ex.isInput            = True
+      ex.flow               = soilmoved
+      ex.amount             = soilmoved_amount
+      ex.unit               = kg
+      ex.flowPropertyFactor = soilmoved.referenceFactor
+      ex.internalId         = max(internalIDs)
+      
       p.exchanges.add(ex)
       dao_p.update(p)
 
@@ -1416,7 +1457,9 @@ for cp in compacting_list:
     # The booleans isin_x indicate, whether the respective flow is present in a process
     isin_comp = False  # Compacted soil as elementary flow
 
+    internalIDs = []
     for ex in p.exchanges:
+      internalIDs.append(ex.internalId)
       if ex.isInput == True:
         if ex.flow.name == soilcompacted.name:
           ex.amount = soilcompacted_amount
@@ -1428,12 +1471,13 @@ for cp in compacting_list:
     # If compacted soil is not present, it is added
     if isin_comp == False:
 
-      ex = model.Exchange()
-      ex.isInput = True
-      ex.flow = soilcompacted
-      ex.amount = soilcompacted_amount
-      ex.unit = kg
-      ex.flowPropertyFactor = soilcompacted.getReferenceFactor()
+      ex                    = model.Exchange()
+      ex.isInput            = True
+      ex.flow               = soilcompacted
+      ex.amount             = soilcompacted_amount
+      ex.unit               = kg
+      ex.flowPropertyFactor = soilcompacted.referenceFactor
+      ex.internalId         = max(internalIDs)
       p.exchanges.add(ex)
       dao_p.update(p)
 
